@@ -1,0 +1,52 @@
+{
+  "name": "sosc-ui",
+  "version": "1.0.0",
+  "bootstrapperVersion": "1.0.0",
+  "private": true,
+  "main": "electron/main.js",
+  "dependencies": {
+    "asar": "^3.1.0",
+    "child_process": "^1.0.2",
+    "electron-browser-storage": "^1.0.7",
+    "electron-is-dev": "^2.0.0",
+    "fs": "0.0.1-security",
+    "http": "0.0.1-security",
+    "keytar": "^7.6.0",
+    "node-fetch": "^2.6.1",
+    "os": "^0.1.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "electron:nowait": "electron ."
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "homepage": "./",
+  "build": {
+    "appId": "mars7383.uiloader",
+    "productName": "UI Loader",
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "extends": null,
+    "mac": {
+      "type": "distribution",
+      "target": "zip"
+    }
+  }
+}

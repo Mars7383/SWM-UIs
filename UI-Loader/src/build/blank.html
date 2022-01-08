@@ -1,0 +1,166 @@
+<html>
+
+<head>
+    <style>
+        #bg {
+            transition: background-color 2s;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0);
+            -webkit-app-region: drag
+        }
+
+        #info {
+            position: absolute;
+            transition: top 2s;
+            top: -15px;
+            left: 5%;
+            text-align: center;
+            width: 90%;
+            padding: 8px 10px;
+            /*margin: 3px 0;
+                display: inline-block;*/
+            border: 1px solid #333333;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #141414;
+            color: #e0e0e0;
+            z-index: 2;
+            -webkit-app-region: drag
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <h1 id="info" style="font-family:Helvetica;">Drop a swmui file</h1>
+    </center>
+    &zwnj;<br><br>
+    <div id="bg" style="background-color:rgba(255, 255, 255, 0.1);width:495px;height:440px;" ondragover="onDragOver(event)" ondrop="onDrop(event);"
+        ondragover="onDropHover(event);"></div>
+</body>
+<script>
+    const electron = require("electron")
+    const fs = require('fs');
+    const os = require('os');
+    const path = require('path');
+    const asar = require('asar');
+    let bg = document.getElementById('bg');
+    let dropped = false;
+    sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
+    async function pulse() {
+        while (!dropped) {
+            await sleep(2000)
+            bg.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+            await sleep(2000)
+            bg.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        }
+    }
+    onDragOver = (event) => {
+        event.preventDefault();
+        bg.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
+    }
+    async function onDrop(ev) {
+        ev.preventDefault();
+        dropped = true;
+        bg.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+        console.log('File(s) dropped');
+        // Prevent default behavior (Prevent file from being opened)
+        if (ev.dataTransfer.items) {
+            // Use DataTransferItemList interface to access the file(s)
+            for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+                // If dropped items aren't files, reject them
+                if (ev.dataTransfer.items[i].kind === 'file') {
+                    var asarfile = ev.dataTransfer.items[i].getAsFile();
+                    if (!asarfile.path.includes(".swmui.asar")) {
+                        electron.shell.beep();
+                        dropped = false;
+                        return;
+                    }
+                    console.log('... file[' + i + '].name = ' + asarfile.name);
+                    let tmpDir;
+                    let renameTo;
+                    const appPrefix = 'uiloader';
+                    try {
+                        tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), appPrefix));
+                        // the rest of your app goes here
+                        try {
+                            try {
+                                await asar.extractAll(asarfile.path, tmpDir);
+                            } catch (e) {
+                                console.log("couldn't extract.\n" + e);
+                                dropped = false;
+                                electron.shell.beep();
+                                return;
+                            }
+                            if (!fs.existsSync(path.join(tmpDir, 'meta'))) {
+                                dropped = false;
+                                electron.shell.beep();
+                                return console.log("not a valid file");
+                            }
+                            fs.readdir(path.join(tmpDir,'meta'), (err, files) => {
+                                files.forEach(file => {
+                                    if (file == 'AppIcon.icns') {
+                                        fs.copyFile(path.join(tmpDir,'meta',file), path.join(__dirname, '../../electron.icns'), (err) => {
+                                            if (err) throw err;
+                                            console.log('AppIcon.icns copied');
+                                        });
+                                    }
+                                    if (file == 'Info.plist') {
+                                        fs.copyFile(path.join(tmpDir,'meta',file), path.join(__dirname, '../../../Info.plist'), (err) => {
+                                            if (err) throw err;
+                                            console.log('Info.plist copied');
+                                        });
+                                    }
+                                    if (file == "uiinfo.json") {
+                                        let appname = require(path.join(asarfile.path,"meta/uiinfo.json")).name;
+                                        document.getElementById('info').innerHTML = "Installing " + appname + "...";
+                                        renameTo = appname;
+                                        electron.ipcRenderer.invoke("save-asar-path", asarfile.path);
+                                    }
+                                });
+                            });
+                        } catch (e) {
+                            console.log('Error reading files!\n' + e);
+                            electron.shell.beep();
+                            dropped = false;
+                            return;
+                        }
+                    }
+                    catch (e) {electron.shell.beep();return;}
+                    finally {
+                        try {
+                            if (tmpDir) {
+                                setTimeout(() => {
+                                fs.rmSync(tmpDir, { recursive: true });
+                                fs.rename(path.join(__dirname, '../../../../'), path.join("/Applications", renameTo+".app"), (err) => {
+                                    if (err) throw err;
+                                    console.log('App renamed');
+                                    electron.shell.showItemInFolder(path.join("/Applications", renameTo+".app"));
+                                });
+                                document.getElementById('info').innerHTML = "Done! Relaunch!";
+                                //electron.ipcRenderer.invoke("quit");
+                            }, 5000);
+                            }
+                        }
+                        catch (e) {
+                            console.error(`An error has occurred while removing the temp folder at ${tmpDir}. Please remove it manually. Error: ${e}`);
+                        }
+                    }
+                }
+            }
+        } else {
+            // Use DataTransfer interface to access the file(s)
+            for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+            }
+        }
+    }
+    async function onDropHover(event) {
+        bg.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
+    }
+    pulse();
+</script>
+
+</html>
