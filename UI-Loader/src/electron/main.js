@@ -58,15 +58,12 @@ const createMainWindow = async () => {
             maximizable: false,
             resizable: false
         });
-    const startURL = isDev
-        ? `file://${path.join(__dirname, '../build/blank.html')}`
-        : `file://${path.join(__dirname, '../build/blank.html')}`;
+    const startURL = `file://${path.join(__dirname, '../build/blank.html')}`;
 
     mainWindow.loadURL(startURL);
     mainWindow.setMenu(null);
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
-        //require(`${path.join(__dirname, '../build/sigma.asar/electron/main.js')}`);
     });
 
     mainWindow.on('closed', () => {
