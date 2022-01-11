@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<head>
+<script>
+  //loginChange();
+  data = JSON.parse(atob("eyJ1c2VybmFtZSI6IkxhdSIsIjQ4aG91ciI6ZmFsc2V9"));
+</script>
+<script src="script-ware-funcs.js"></script>
+<script src="scriptfiles.js"></script>
+<html>
+<script>
+window.$ = window.jQuery = require('./jquery.min.js');
+window.monaco = require("./monaco-loader.js");
+window.path = require("path");
+</script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>-->
+<script src="https://kit.fontawesome.com/79a051c784.js" crossorigin="anonymous"></script>
+<style type="text/css">
+  #tabs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
+
+  #tabs li {
+    border-radius: 3px 3px 0px 0px;
+    float: left;
+    display: block;
+    padding: 1px;
+    background-color: #4a4a4a;
+    margin-right: 2px;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
+
+  #tabs li a {
+    margin-left: 4px;
+    margin-right: 4px;
+    color: #fff;
+    text-decoration: none;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
+
+  #tabs li.current {
+    background-color: #6b6b6b;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
+
+  #tabs li.current a {
+    color: #000;
+    text-decoration: none;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
+
+  #tabs li a.remove {
+    color: #bbb;
+    margin-left: 10px;
+    font-face: arial;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
+
+  #tabs li.current a.remove {
+    color: #bbb;
+    margin-left: 10px;
+    font-face: arial;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
+</style>
+
+<style>
+  .lib {
+    background-color: rgb(44, 44, 44);
+    /* Green */
+    border: none;
+    color: white;
+    padding-top: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 11px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+
+  .lib:hover {
+    background-color: grey;
+    /* Green */
+    color: white;
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  /* The Modal (background) */
+  .modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+  }
+
+  /* Modal Content */
+  .modal-content {
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 450px;
+    height: 240px;
+    margin-top: -2px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
+  /* output */
+  .output {
+    bottom: 36px;
+    position: absolute;
+    right: 8px;
+    color: #aaaaaa;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .output:hover,
+  .output:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .credits {
+    bottom: 8px;
+    position: absolute;
+    right: 8px;
+    color: #aaaaaa;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .credits:hover,
+  .credits:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .miau:active {
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  input, button, textarea, :focus {
+    outline: none;
+}
+</style>
+</head>
+
+<body style="background-color:rgb(44,44,44);margin: 2px; height: 100%; overflow: hidden;">
+  <script type="text/javascript">
+  function U2A(str) {
+    return unescape(encodeURIComponent(str));
+  }
+
+  var dragTimer;
+  var scripts = {};
+
+  function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  $(document).ready(function () {
+    addTab("sigma-chi [beta]");
+    $("#tabs").append(`
+                <img class='miau' style="float:right;" src="smallballlogo.png" width="20px">`);
+  });
+
+  var tabsopen = 0;
+
+  function addTab(link) {
+    // If tab already exist in the list, return
+    if ($("#" + link).length != 0)
+      return;
+
+    if (link != "sigma-chi [beta]") {
+      scripts[$("#tabs li.current").eq(0).find("a.tab").attr("id")] = window.editor.getValue();
+    }
+    // hide other tabs
+    $("#tabs li").removeClass("current");
+
+    $("#addtab").parent().remove();
+    // add new tab and related content
+    if (link == "sigma-chi [beta]") {
+      $("#tabs").append("<li class='current'><a class='tab' id='" +
+        link + "' href='#'><font face='arial' style='color:#e3e3e3;font-size:12px;'>" + link +
+        "</font></a></li>");
+    } else {
+      $("#tabs").append("<li class='current'><a class='tab' id='" +
+        link + "' href='#'><font face='arial' style='color:#e3e3e3;font-size:12px;'>" + link +
+        "</font></a><a href='#' class='remove'>&times;</a></li>");
+
+      scripts[$("#tabs li.current").eq(0).find("a.tab").attr("id")] = "";
+      window.editor.setValue("");
+    }
+
+    tabsopen = $("#tabs li").length;
+    console.log(tabsopen);
+    if (tabsopen != 5) {
+      // add new tab and related content
+      $("#tabs").append("<li class='addtabber'><a href='#' id='addtab' class='add'>+</a></li>");
+    }
+
+    // set the newly added tab as current
+    $("#" + link + "_content").show();
+
+    var objDiv = document.getElementById("tabcont");
+    objDiv.scrollTop = objDiv.scrollHeight;
+
+    if (tabsopen != 5) {
+      $('#tabs a.add').on('click', function () {
+        addTab(makeid(10));
+      });
+    }
+
+    $('#tabs a.tab').on('click', function () {
+      scripts[$("#tabs li.current").eq(0).find("a.tab").attr("id")] = window.editor.getValue();
+      // Get the tab name
+      var contentname = $(this).attr("id") + "_content";
+
+      // hide all other tabs
+      $("#content p").hide();
+      $("#tabs li").removeClass("current");
+
+      // show current tab
+      $("#" + contentname).show();
+      $(this).parent().addClass("current");
+
+      window.editor.setValue(scripts[$(this).attr("id")]);
+    });
+
+    $('#tabs a.remove').on('click', function () {
+      if (tabsopen == 5) {
+        // add new tab and related content
+        $("#tabs").append("<li class='addtabber'><a href='#' id='addtab' class='add'>+</a></li>");
+
+        $('#tabs a.add').on('click', function () {
+          addTab(makeid(10));
+        });
+      }
+      // Get the tab name
+      var tabid = $(this).parent().find(".tab").attr("id");
+
+      // remove tab and related content
+      var contentname = tabid + "_content";
+      $("#" + contentname).remove();
+      $(this).parent().remove();
+
+      // if there is no current tab and if there are still tabs left, show the first one
+      if ($("#tabs li.current").length == 0 && $("#tabs li").length > 0) {
+
+        // find the first tab    
+        var firsttab = $("#tabs li:first-child");
+        firsttab.addClass("current");
+
+        window.editor.setValue(scripts[$("#tabs li.current").eq(0).find("a.tab").attr("id")]);
+        // get its link name and show related content
+        var firsttabid = $(firsttab).find("a.tab").attr("id");
+        $("#" + firsttabid + "_content").show();
+      }
+
+      tabsopen = $("#tabs li").length - 1;
+      console.log(tabsopen);
+    });
+  }
+</script>
+  <div id="tabcont" style="overflow: auto; width: 100%; height: 20px;">
+    <ul id="tabs">
+      <!-- Tabs go here -->
+    </ul>
+  </div>
+  <div id="dropzone" class="modal"
+    style="border: 2px dashed black; resize: vertical;overflow: auto;width:calc(100%);height: calc(90vh); ">
+    <center>
+      <div style="width:100%;height:100%;display: flex;
+  justify-content: center;
+  align-items: center;">
+        <font face="arial" style="color:white;">Drop script here<br><input type="file" widht="200px" height="200px"
+            id="input-file"></font>
+      </div>
+    </center>
+  </div>
+  <div id="container" style="overflow: hidden;width:calc(100% - 2);height: calc(100vh - 50px);border:1px solid #6b6b6b">
+  </div>
+  <div style="user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;">&nbsp;&nbsp;<i onclick="execute(window.editor.getValue())" style="cursor:pointer;padding-top:4px;color:green;user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;" class="fa fa-play"></i>&nbsp;&nbsp;<i onclick="
+          	window.editor.setValue(getClipboardContents())" style="cursor:pointer;padding-top:4px;color:#ffe1bd;user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;" class="fa fa-paste"></i>&nbsp;&nbsp;<i onclick="
+          	window.editor.setValue('')" style="cursor:pointer;padding-top:4px;color:#ffbdbd;user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;" class="fa fa-trash"></i>
+    <button class="lib" style=" float:right;user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;" id="myBtn">Utilities & Library</button>
+    <button
+      onclick="closeutil(); execute(scriptFiles.dex);"
+      class="lib" style=" float:right;user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;">Dex by Moon</button>
+        <p style="float:right;cursor:pointer;padding-top:4px;color:#ffffff;user-select: none;">&nbsp;</p>
+        <i onclick="
+          	inject()" style="float:right;cursor:pointer;padding-top:4px;color:#ffffff;user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;" class="fa fa-syringe"></i>
+    <button id="ticker" class="lib" style=" float:right;user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;"></button></div>
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close" style="padding-left:10px;">&times;</span>
+      <span class="output" style=""><i
+          onclick="closeutil(); require('electron').shell.showItemInFolder(path.join(require('os').homedir(), '/Documents/Script-Ware/log.diag'));"
+          class="fa fa-window-maximize"></i></span>
+      <span class="credits" style=""><i
+          onclick="closeutil(); require('electron').shell.openExternal('https://github.com/Mars7383/SWM-UIs');"
+          class="fa fa-question-circle"></i></span>
+      <!--<button onclick="executeButton(btoa(`local l_spawn = function(b) spawn(loadstring(b)) end l_spawn(game:HttpGet('https://cdn.calamari.cc/scripts/iy.lua'))`));" >Infinite Yield</button>
+            <button onclick="executeButton(btoa(`local l_spawn = function(b) spawn(loadstring(b)) end l_spawn(game:HttpGet('https://cdn.calamari.cc/scripts/remotespy.lua'))`));" >Remote Spy</button>
+            <button onclick="executeButton(btoa(`local l_spawn = function(b) spawn(loadstring(b)) end l_spawn(game:HttpGet('https://cdn.calamari.cc/scripts/esp.lua'))`);" >ESP</button>
+            <button  onclick="executeButton(btoa(`local l_spawn = function(b) spawn(loadstring(b)) end l_spawn(game:HttpGet('https://cdn.calamari.cc/scripts/clicktp.lua'))`));" >Click to TP</button>
+            <button  onclick="executeButton(btoa(`local l_spawn = function(b) spawn(loadstring(b)) end l_spawn(game:HttpGet('https://cdn.calamari.cc/scripts/roxploit.lua'))`));" >RoXploit 6.0</button>
+            <button  onclick="executeButton(btoa(`local l_spawn = function(b) spawn(loadstring(b)) end l_spawn(game:HttpGet('https://cdn.calamari.cc/scripts/owlhub.lua'))`));" >Owl Hub</button>
+            <button  onclick="executeButton(btoa(`local l_spawn = function(b) spawn(loadstring(b)) end l_spawn(game:HttpGet('https://cdn.calamari.cc/scripts/fly.lua'))`));" >Fly</button>
+          -->
+      <button onmouseover="this.style['background-color']='#e8e8e8';"
+        onmouseout="this.style['background-color']='#f2f2f2';" style="
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  color: black;
+  padding: 0px;
+  height: 230px;
+  text-align: center;
+  text-decoration: none;
+    display: inline-block;
+  font-size: 16px;
+  width: 130px;
+  margin: 4px 2px;
+  cursor: pointer;">
+        <center>
+          <div
+            onclick="closeutil(); execute(scriptFiles.saveInstance);">
+            <img
+              onclick="closeutil(); execute(scriptFiles.saveInstance);"
+              width="80px" height="80px" src="saveinstance.png">
+            <br>
+            <b
+              onclick="closeutil(); execute(scriptFiles.saveInstance);">Save
+              Place</b>
+            <br>
+            <p onclick="closeutil(); execute(scriptFiles.saveInstance);"
+              style="font-size:9px; width: 120px;  text-align: justify;
+  text-justify: inter-word;">
+              The most accurate place-saver ever. Written by Moon. Save Meshes and UnionOperations featuring collisions,
+              LocalScripts and ModuleScripts, and more. The entire game exported.
+            </p>
+          </div>
+          <input onclick="document.getElementById('trol').innerText = 'sike 💀💀💀'" type="checkbox" id="decompilescripts"
+            name="decompilescripts">
+          <label for="decompilescripts" style="font-size:11px; color: #5c5c5c" id="trol"> decompile scripts</label><br>
+        </center>
+      </button>
+      <div style="
+  float:right;
+  padding-top:1px;
+  padding-right:5px;
+   margin-right:0px;
+   border-right:1px solid #ccc;height:100%">
+        <button onclick="closeutil(); execute(scriptFiles.unlockFps);"
+          onmouseover="this.style['background-color']='#e8e8e8';" onmouseout="this.style['background-color']='#f2f2f2';"
+          style="
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  color: black;
+  padding: 5px;
+  height: 30px;
+  width: 130px;
+  text-align: center;
+  text-decoration: none;
+    display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;">
+          Unlock FPS
+        </button>
+        <br>
+        <button
+          onclick="closeutil(); execute(scriptFiles.streamSniper);"
+          onmouseover="this.style['background-color']='#e8e8e8';" onmouseout="this.style['background-color']='#f2f2f2';"
+          style="
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  color: black;
+  padding: 5px;
+  height: 30px;
+  width: 130px;
+  text-align: center;
+  text-decoration: none;
+    display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;">
+          Stream Sniper
+        </button>
+        <br>
+        <button
+          onclick="closeutil(); execute(scriptFiles.esp);"
+          onmouseover="this.style['background-color']='#e8e8e8';" onmouseout="this.style['background-color']='#f2f2f2';"
+          style="
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  color: black;
+  padding: 5px;
+  height: 30px;
+  width: 130px;
+  text-align: center;
+  text-decoration: none;
+    display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;">
+          ESP
+        </button>
+        <br>
+        <center>
+          <img src="AppIcon.png" width="50px" height="50px"></img>
+          <br>
+          <i style="font-family:times new roman; font-size: 14px;">sweetheart of sigma chi</i>
+          <p style="font-size:9px">
+            Created by Inspect. With special<br>thanks to AzuLX, Moon, cook,<br>Cammy, Sigma, deima, and doot.
+          </p>
+        </center>
+      </div>
+
+      <div style="
+  float:right;
+   margin-right:5px;">
+        <button
+          onclick="closeutil();execute(scriptFiles.IY);"
+          onmouseover="this.style['background-color']='#e8e8e8';" onmouseout="this.style['background-color']='#f2f2f2';"
+          style="
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  color: black;
+  padding-top:8px;
+  padding-right:12px;
+  height: 70px;
+  width: 130px;
+  text-align: center;
+  text-decoration: none;
+    display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;">
+          <img width="80px" height="45px" src="IYlight.png">
+        </button>
+        <br>
+        <button
+          onclick="closeutil(); execute(scriptFiles.remoteSpy);"
+          onmouseover="this.style['background-color']='#e8e8e8';" onmouseout="this.style['background-color']='#f2f2f2';"
+          style="
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  color: black;
+  padding: 0px;
+  height: 70px;
+  width: 130px;
+  text-align: center;
+  text-decoration: none;
+    display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;">
+          <img width="30px" height="30px" src="filter.png"><br>
+          <font style="font-size:12px">RemoteSpy</font>
+        </button>
+        <br>
+        <button onclick="closeutil(); require('electron').shell.openPath('/Users/Shared/ScriptWare/Workspace/');"
+          onmouseover="this.style['background-color']='#e8e8e8';" onmouseout="this.style['background-color']='#f2f2f2';"
+          style="
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  color: black;
+  padding: 0px;
+  height: 74px;
+  width: 130px;
+  text-align: center;
+  text-decoration: none;
+    display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;">
+          <img width="16px" height="16px" src="workspace.png"><br>
+          <font style="font-size:10px">Open Workspace Folder</font>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    function closeutil() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+<script>
+  function uriFromPath(_path) {
+    var pathName = path.resolve(_path).replace(/\\/g, '/');
+    if (pathName.length > 0 && pathName.charAt(0) !== '/') {
+        pathName = '/' + pathName;
+    }
+    return encodeURI('file://' + pathName);
+  }
+  monaco.require.config({
+    paths: {
+      'vs': uriFromPath(path.join(__dirname, './monaco-editor/min/vs')) //'monaco-editor/min/vs'
+    }
+  });
+  monaco.require(['vs/editor/editor.main'], function () {
+    window.editor = monaco.editor.create(document.getElementById('container'), {
+      value: [
+        ''
+      ].join('\n'),
+      language: 'lua',
+      theme: "vs-dark",
+      scrollbar: {
+        vertical: 'auto',
+        horizontal: 'auto'
+      },
+      minimap: {
+        enabled: false,
+      },
+      automaticLayout: true // the important part
+    });
+    var myBinding = window.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_C, function () {
+      document.execCommand('copy')
+    });
+    var myBinding = window.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_V, function () {
+      document.execCommand('paste')
+    });
+    var myBinding = window.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_X, function () {
+      document.execCommand('cut')
+    });
+
+    function syntaxError() {
+      //setTimeout(syntaxError, 200);
+      var s = window.editor.getValue();
+      compileTest(btoa(U2A(s))).then(function (err) {
+        if (err == "OK") {
+          monaco.editor.setModelMarkers(window.editor.getModel(), '', [{}])
+        } else {
+          var err = atob(err).split(":");
+          var line = err[1];
+          var stx = err[2];
+          monaco.editor.setModelMarkers(window.editor.getModel(), '', [{
+            startLineNumber: parseInt(line),
+            startColumn: 1,
+            endLineNumber: parseInt(line),
+            endColumn: 1000,
+            message: stx
+          }]);
+        }
+      });
+    };
+    syntaxError();
+  });
+  $(function () {
+    /*
+     * this swallows backspace keys on any non-input element.
+     * stops backspace -> back
+     */
+    var rx = /INPUT|SELECT|TEXTAREA/i;
+
+    $(document).bind("keydown keypress", function (e) {
+      if (e.which == 8) { // 8 == backspace
+        if (!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly) {
+          e.preventDefault();
+        }
+      }
+    });
+  });
+
+  function save() {
+    // get the value of the data
+    var value = window.editor.getValue()
+    saveValueSomewhere(value);
+  }
+
+  $(document).on('dragover', function (e) {
+    var dt = e.originalEvent.dataTransfer;
+    if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+      $("#dropzone").show();
+      window.clearTimeout(dragTimer);
+    }
+  });
+
+  $(document).on('dragleave', function (e) {
+    dragTimer = window.setTimeout(function () {
+      $("#dropzone").hide();
+    }, 25);
+  });
+
+  function getFile(event) {
+    const input = event.target
+    console.log(input);
+    if ('files' in input && input.files.length > 0) {
+      placeFileContent(
+        input.files[0])
+    }
+  }
+
+  function placeFileContent(file) {
+    readFileContent(file).then(content => {
+      window.editor.setValue(content);
+
+      $("#dropzone").hide();
+    }).catch(error => console.log(error))
+  }
+
+  function setScript(content) {
+    window.editor.setValue(content);
+  }
+
+  function readFileContent(file) {
+    const reader = new FileReader()
+    return new Promise((resolve, reject) => {
+      reader.onload = event => resolve(event.target.result)
+      reader.onerror = error => reject(error)
+      reader.readAsText(file)
+    })
+  }
+
+  document.getElementById('input-file')
+    .addEventListener('change', getFile)
+
+  function executeScript() {
+    executeButton(btoa(U2A(window.editor.getValue())));
+  }
+
+  if (data["48hour"]) {
+    document.calamariStamp = data.tick;
+  }
+
+  function ticktock() {
+    var seconds = document.calamariStamp--;
+    var hours = Math.floor(document.calamariStamp / 3600);
+    var minutes = Math.floor((document.calamariStamp / 60) % 60);
+    var seconds = document.calamariStamp % 60;
+    var windows = hours + ":" + minutes + ":" + seconds + " remaining.";
+    document.getElementById("ticker").innerHTML = windows;
+    setTimeout(ticktock, 1000);
+  }
+  if (document.calamariStamp) {
+    ticktock();
+  }
+</script>
+</html>

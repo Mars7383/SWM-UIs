@@ -1,0 +1,64 @@
+{
+  "name": "sosc-ui",
+  "version": "1.0.0",
+  "bootstrapperVersion": "1.0.0",
+  "private": true,
+  "main": "electron/main.js",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "electron-is-dev": "^2.0.0",
+    "fs": "0.0.1-security",
+    "http": "0.0.1-security",
+    "keytar": "^7.6.0",
+    "node-fetch": "^2.6.1",
+    "os": "^0.1.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "PUBLIC_URL=/ react-scripts build",
+    "build-electron": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron:start": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:nowait": "electron .",
+    "electron:build": "npm run build-electron && electron-builder build --publish never"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "homepage": "./",
+  "build": {
+    "appId": "mars7383.caliware.sosc",
+    "productName": "SOSC UI",
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "meta/**/*",
+      "package.json"
+    ],
+    "extends": null,
+    "mac": {
+      "type": "distribution",
+      "target": "zip"
+    }
+  }
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <style>
+    input[type=text] {
+      width: 90%;
+      padding: 8px 10px;
+      margin: 3px 0;
+      display: inline-block;
+      border: 1px solid #333333;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #141414;
+      color: #e0e0e0;
+    }
+    
+    input[type=password] {
+      width: 90%;
+      padding: 8px 10px;
+      margin: 3px 0;
+      display: inline-block;
+      border: 1px solid #333333;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #141414;
+      color: #e0e0e0;
+    }
+    
+    button {
+      width: 90%;
+      padding: 5px 10px;
+      margin: 6px 0;
+      display: inline-block;
+      border: 1px solid #333333;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #333333;
+      color: #e0e0e0;
+    }
+    
+    button:hover {
+      width: 90%;
+      padding: 5px 15px;
+      margin: 6px 0;
+      display: inline-block;
+      border: 1px solid #5c5c5c;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #5c5c5c;
+      color: #e0e0e0;
+    }
+    
+    button:active {
+      width: 90%;
+      padding: 5px 15px;
+      margin: 6px 0;
+      display: inline-block;
+      border: 1px solid #333333;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #333333;
+      color: #e0e0e0;
+    }
+    input, button, textarea, :focus {
+    outline: none;
+}
+    </style>
+    <body style="background-color:#1c1c1c;;margin:4px;">
+        <audio src="https://mattt.lol/calamari/fakecdn/Sweetheart.mp3" autoplay></audio>
+        <font face="helvetica" style="color: #e0e0e0">
+            <div style="outline: 1px dotted #5c5c5c; height: 430px; display: block;">
+                <center>
+                    <img src="AppLogo.png" width="200px">
+                    <font face="times new roman" style="color: #6b6b6b">
+                        <i>sweetheart of sigma chi</i>
+                    </font>
+                    <input id="username" type="text" placeholder="username"><br>
+                    <input id="password" type="password" type="text" placeholder="password"><br>
+                    <button id="login" onclick="loginPressed()">login</button><br>
+                    <input onclick="checkboxChanged()" type="checkbox" id="rememberme" name="rememberme">
+                    <label for="rememberme" style="font-size:12px; color: #5c5c5c"> remember login</label><br>
+                    <p id="autherror" style='color:red;font-family:"Courier New", Courier, monospace;font-size:11px;'></p>
+                </center>
+            </div>
+            <font face="helvetica" style="color: #e0e0e0; font-size: 14px;">
+                &copy; 2020 Inspect
+            </font>
+        </font>
+    </body>           
+    <script src="script-ware-funcs.js"></script>    
+    <script>
+        var names = ["world", "doggy", "heart", "sigma", "marie", "slave", "salvation"];
+        
+        var usernamebox     = document.getElementById("username");
+        var passwordbox     = document.getElementById("password");
+        var loginbtn        = document.getElementById("login");
+        var remembermebtn   = document.getElementById("rememberme");
+        var autherrorlbl    = document.getElementById("autherror");
+        
+        function httpGet(theUrl)
+        {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+            xmlHttp.send( null );
+            return xmlHttp.responseText;
+        }
+        
+        function loginPressed(){
+            if (usernamebox.value != ""){
+                if (passwordbox.value != ""){
+                    var uname = usernamebox.value;
+                    var pword = passwordbox.value;
+                    window.authenticate(uname, pword);
+                    /*
+                    var res = httpGet("connect.php?u=" + btoa(uname) + "&p=" + btoa(pword));
+                    if (res.substr(0, 3) != "SSC"){
+                        autherrorlbl.innerHTML = res;
+                    }
+                    else{                    
+                        if (remembermebtn.checked){
+                            rememberMe("yes");
+                        }
+                        else{
+                            rememberMe("no");
+                        }
+                        setUsername(uname);
+                        setPassword(pword);
+                        if (window.navigator.appVersion.search("Mac OS X 10_11") == -1 && window.navigator.appVersion.search("Mac OS X 10_12") == -1){
+                            window.location.href = 'https://cdn.calamari.cc/ssc/ui/executor?data=' + btoa(res.substr(3));
+                        }
+                        else{
+                            window.location.href = 'https://cdn.calamari.cc/ssc/ui/executor_basic?data=' + btoa(res.substr(3));
+                        }
+                    }
+                    */
+                  }
+            }
+        }
+        
+        function shuffle(str) {
+            var a = str.split(""),
+                n = a.length;
+        
+            for(var i = n - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+            }
+            return a.join("");
+        }
+        
+        var name = names[ Math.floor(Math.random() * (names.length))];
+        var m = name.substr(1, name.length - 2);
+        var f = name.substr(0,1);
+        var l = name.substr(-1,1);
+        
+        usernamebox.setAttribute("placeholder", "u" + shuffle("sernam") + "e...");
+        passwordbox.setAttribute("placeholder", "p" + shuffle("asswor") + "d...");
+        loginbtn.innerHTML = ("e" + shuffle("nte") + "r y" + shuffle("ou") + "r " + f + shuffle(m) + l);
+        
+        //initMain();
+        
+        if (document.suname != ""){
+            usernamebox.value = atob(document.suname);
+            remembermebtn.checked = true;
+        }
+        
+        if (document.spword != ""){
+            passwordbox.value = atob(document.spword);
+        }
+    </script>
+</html>
